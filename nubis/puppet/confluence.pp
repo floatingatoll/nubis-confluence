@@ -65,7 +65,7 @@ class confluence (
         notify  => Exec["unpack confluence version ${version}"],
     }
 
-    exec { "unpack confluence version ${version}"
+    exec { "unpack confluence version ${version}":
         path        => ["/usr/bin", "/bin", "/usr/sbin", "/sbin"],
         cwd         => '/usr/local/src',
         command     => "tar xvzf atlassian-confluence-${version}.tar.gz -C /opt/atlassian",
