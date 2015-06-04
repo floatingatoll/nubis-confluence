@@ -2,8 +2,7 @@
     "provisioners": [
         {
             "type": "shell",
-            "inline": ["true"],
-            "order": "20"
+            "inline": [ "true" ]
         }
     ]
 }

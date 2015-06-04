@@ -1,2 +1,1 @@
-
-include confluence.pp
+# empty init file
