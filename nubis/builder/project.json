@@ -7,7 +7,7 @@
     ],
     "project_description": "Nubis confluence install",
     "project_name": "nubis-confluence",
-    "project_version": "0.9",
+    "project_version": "0.10",
     "source_ami_project_name": "nubis-base"
   }
 }

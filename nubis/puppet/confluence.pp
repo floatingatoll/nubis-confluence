@@ -71,6 +71,12 @@ class confluence (
         refreshonly => true,
         require     => File['/opt/atlassian'],
     }
+
+    file { "/opt/atlassian/atlassian-confluence-${version}":
+        ensure  => link,
+        target  => '/opt/atlassian/confluence',
+        require => Exec["unpack confluence version ${version}"],
+    }
 }
 
 class { 'confluence':
