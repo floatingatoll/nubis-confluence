@@ -1,8 +1,16 @@
 {
     "provisioners": [
         {
-            "type": "shell",
-            "inline": [ "true" ]
+            "type": "file",
+            "source": "nubis/bin/confluence-robots.txt",
+            "destination": "/opt/atlassian/confluence/robots.txt",
+            "order": "11"
+        },
+        {
+            "type": "file",
+            "source": "nubis/bin/setenv.sh",
+            "destination": "/opt/atlassian/confluence/bin/setenv.sh",
+            "order": "12"
         }
     ]
 }
