@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# confluence    Startup script for the Confluence
+#
+# chkconfig: 2345 99 01
+# description: 
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+progname=`basename $0`
+
+startscript=bin/startup.sh
+stopscript=bin/shutdown.sh
+prefix=/opt/atlassian/confluence
+user=confluence
+
+pidfile=/var/run/${progname}/${progname}.pid
+RETVAL=0
+JAVA_HOME=/usr/lib/jvm/jre
+CATALINA_HOME=${prefix}
+CATALINA_PID=$pidfile
+#JAVA_OPTS stuff has moved to setenv.sh
+#JAVA_OPTS=''
+export CATALINA_HOME
+export CATALINA_PID
+export JAVA_HOME
+export JAVA_OPTS
+
+start() {
+	export JAVA_HOME
+	export CATALINA_PID
+        echo -n $"Starting ${progname}: "
+	su - $user -c "export CATALINA_PID=${CATALINA_PID}; export JAVA_HOME=${JAVA_HOME}; export JAVA_OPTS=${JAVA_OPTS}; ${prefix}/${startscript}"
+        RETVAL=$?
+        if [ $RETVAL == 0 ]
+        then
+            echo_success
+        else
+            echo_failure
+        fi
+        echo
+}
+
+stop() {
+	export JAVA_HOME
+	export CATALINA_PID
+	echo -n $"Stopping ${progname}: "
+	su - $user -c "export CATALINA_PID=${CATALINA_PID}; export JAVA_HOME=${JAVA_HOME}; export JAVA_OPTS=${JAVA_OPTS}; ${prefix}/${stopscript}"
+	RETVAL=$?
+        if [ $RETVAL == 0 ]
+        then
+            echo_success
+        else
+            echo_failure
+        fi
+	echo
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+        status -p ${pidfile} ${progname}
+	RETVAL=$?
+	;;
+  restart)
+	stop
+	sleep 5
+	start
+	;;
+  *)
+	echo $"Usage: ${progname} {start|stop|status|restart}"
+	exit 1
+esac
+
+exit $RETVAL

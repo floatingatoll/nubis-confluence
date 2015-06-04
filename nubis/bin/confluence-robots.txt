@@ -1,0 +1,5 @@
+User-agent: gsa-crawler
+Allow: /
+
+User-agent: *
+Disallow: /
