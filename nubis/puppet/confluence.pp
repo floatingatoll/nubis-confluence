@@ -9,7 +9,7 @@ class confluence (
     }
 
     package { 'libXp':
-        ensure => present
+        ensure => present,
     }
 
     package { 'libXp-devel':
@@ -36,7 +36,7 @@ class confluence (
         owner   => confluence,
         group   => confluence,
         mode    => '0755',
-        require => [ File['/data'], User['confluence']]
+        require => [ File['/data'], User['confluence']],
     }
 
     file { '/opt':
@@ -60,7 +60,7 @@ class confluence (
     # download file if it doesn't exist
     exec { "download atlassian version ${version}":
         path    => ["/usr/bin", "/bin", "/usr/sbin", "/sbin"],
-        command => "wget -P /usr/local/src ${download_link}"
+        command => "wget -P /usr/local/src ${download_link}",
         onlyif  => "test -f /usr/local/src/atlassian-confluence-${version}.tar.gz",
         notify  => Exec["unpack confluence version ${version}"],
     }
