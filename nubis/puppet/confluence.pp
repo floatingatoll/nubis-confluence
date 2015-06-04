@@ -60,7 +60,7 @@ class confluence (
     # download file if it doesn't exist
     exec { "download atlassian version ${version}":
         path    => ["/usr/bin", "/bin", "/usr/sbin", "/sbin"],
-        command => "wget -P /usr/local/src/atlassian-confluence-${version}.tar.gz ${download_link}",
+        command => "wget -P /usr/local/src ${download_link}",
         unless  => "test -f /usr/local/src/atlassian-confluence-${version}.tar.gz",
         notify  => Exec["unpack confluence version ${version}"],
     }
