@@ -12,7 +12,7 @@ class confluence (
         }
         'debian': {
             $libxp_packagename          = 'libxp6'
-            $libxp_devel_packagename    = 'libxp-devel'
+            $libxp_devel_packagename    = 'libxp-dev'
             $java_openjdk_packagename   = 'openjdk-7-jdk'
         }
         'default': {
