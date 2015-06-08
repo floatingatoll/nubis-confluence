@@ -8,10 +8,12 @@ class confluence (
         'redhat': {
             $libxp_packagename          = 'libXp'
             $libxp_devel_packagename    = 'libxp-devel'
+            $java_openjdk_packagename   = 'java-1.7.0-openjdk'
         }
         'debian': {
             $libxp_packagename          = 'libxp6'
             $libxp_devel_packagename    = 'libxp-devel'
+            $java_openjdk_packagename   = 'openjdk-7-jdk'
         }
         'default': {
             fail("Fail ${::osfamily} is not supported")
@@ -20,6 +22,7 @@ class confluence (
 
     package { 'java-1.7.0-openjdk':
         ensure => present,
+        name   => $java_openjdk_packagename,
     }
 
     package { 'libXp':
