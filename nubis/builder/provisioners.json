@@ -1,6 +1,13 @@
 {
     "provisioners": [
         {
+            "type": "shell",
+            "inline": [
+                "mkdir -p /opt/atlassian"
+            ],
+            "order": "1"
+        },
+        {
             "type": "file",
             "source": "nubis/bin/confluence-robots.txt",
             "destination": "/opt/atlassian/confluence/robots.txt",
