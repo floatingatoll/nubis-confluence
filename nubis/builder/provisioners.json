@@ -3,7 +3,7 @@
         {
             "type": "shell",
             "inline": [
-                "mkdir -p /opt/atlassian"
+                "sudo mkdir -p /opt/atlassian"
             ],
             "order": "1"
         },
