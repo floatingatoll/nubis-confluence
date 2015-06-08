@@ -4,16 +4,32 @@ class confluence (
 
     $download_link = "https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-${version}.tar.gz"
 
+    case $::osfamily {
+        'redhat': {
+            $libxp_packagename          = 'libXp'
+            $libxp_devel_packagename    = 'libxp-devel'
+        }
+        'debian': {
+            $libxp_packagename          = 'libxp6'
+            $libxp_devel_packagename    = 'libxp-devel'
+        }
+        'default': {
+            fail("Fail ${::osfamily} is not supported")
+        }
+    }
+
     package { 'java-1.7.0-openjdk':
         ensure => present,
     }
 
     package { 'libXp':
         ensure => present,
+        name   => $libxp_packagename,
     }
 
     package { 'libXp-devel':
         ensure => present,
+        name   => $libxp_devel_packagename,
     }
 
     group { 'confluence':
