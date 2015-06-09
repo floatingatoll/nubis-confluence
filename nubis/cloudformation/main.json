@@ -227,6 +227,15 @@
           "Outputs.DNSName"
         ]
       }
+    },
+    "DBServer": {
+      "Description": "Consul: config/ Database endpoint",
+      "Value": {
+        "Fn::GetAtt": [
+          "RDSStack",
+          "Outputs.RDSEndpoint"
+        ]
+      }
     }
   }
 }
