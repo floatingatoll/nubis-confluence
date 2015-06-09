@@ -66,6 +66,7 @@ class confluence (
         ensure  => directory,
         owner   => confluence,
         group   => confluence,
+        mode    => '0755',
         require => File['/opt'],
     }
 
@@ -91,9 +92,9 @@ class confluence (
         require     => File['/opt/atlassian'],
     }
 
-    file { "/opt/atlassian/atlassian-confluence-${version}":
+    file { "/opt/atlassian/confluence":
         ensure  => link,
-        target  => '/opt/atlassian/confluence',
+        target  => "/opt/atlassian/atlassian-confluence-${version}",
         require => Exec["unpack confluence version ${version}"],
     }
 }

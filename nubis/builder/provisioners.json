@@ -10,14 +10,24 @@
         {
             "type": "file",
             "source": "nubis/bin/confluence-robots.txt",
-            "destination": "/opt/atlassian/confluence/robots.txt",
+            "destination": "/tmp/robots.txt",
             "order": "11"
         },
         {
             "type": "file",
             "source": "nubis/bin/setenv.sh",
-            "destination": "/opt/atlassian/confluence/bin/setenv.sh",
+            "destination": "/tmp/setenv.sh",
             "order": "12"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo chown confluence:confluence /opt/atlassian",
+                "sudo chown confluence:confluence /var/run/confluence",
+                "sudo mv /tmp/robots.txt /opt/atlassian/confluence",
+                "sudo mv /tmp/setenv.sh /opt/atlassian/confluence"
+            ],
+            "order": "20"
         }
     ]
 }
