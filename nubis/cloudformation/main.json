@@ -148,72 +148,72 @@
           }
         }
       }
-    }
-  },
-  "RDSStack": {
-    "Type": "AWS::CloudFormation::Stack",
-    "Properties": {
-      "TemplateURL": "https://s3.amazonaws.com/nubisproject-stacks/master/rds-postgres.template",
-      "TimeoutInMinutes": "60",
-      "Parameters": {
-        "ServiceName": {
-          "Ref": "ServiceName"
-        },
-        "TechnicalOwner": {
-          "Ref": "TechnicalOwner"
-        },
-        "Environment": {
-          "Ref": "Environment"
-        },
-        "AllocatedStorage": "15",
-        "DBInstanceClass": "db.t1.micro",
-        "DBName": {
-          "Ref": "ServiceName"
-        },
-        "EC2SecurityGroup": {
-          "Fn::GetAtt": [
-            "EC2Stack",
-            "Outputs.EC2SecurityGroup"
-          ]
+    },
+    "RDSStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/nubisproject-stacks/master/rds-postgres.template",
+        "TimeoutInMinutes": "60",
+        "Parameters": {
+          "ServiceName": {
+            "Ref": "ServiceName"
+          },
+          "TechnicalOwner": {
+            "Ref": "TechnicalOwner"
+          },
+          "Environment": {
+            "Ref": "Environment"
+          },
+          "AllocatedStorage": "15",
+          "DBInstanceClass": "db.t1.micro",
+          "DBName": {
+            "Ref": "ServiceName"
+          },
+          "EC2SecurityGroup": {
+            "Fn::GetAtt": [
+              "EC2Stack",
+              "Outputs.EC2SecurityGroup"
+            ]
+          }
         }
       }
-    }
-  },
-  "StorageStack": {
-    "Type": "AWS::CloudFormation::Stack",
-    "Properties": {
-      "TemplateURL": "https://s3.amazonaws.com/nubisproject-stacks/master/storage.template",
-      "TimeoutInMinutes": "60",
-      "Parameters": {
-        "StackName": {
-          "Ref": "AWS::StackName"
-        },
-        "ServiceName": {
-          "Ref": "ServiceName"
-        },
-        "TechnicalOwner": {
-          "Ref": "TechnicalOwner"
-        },
-        "Environment": {
-          "Ref": "Environment"
-        },
-        "KeyName": {
-          "Ref": "KeyName"
-        },
-        "InstanceType": {
-          "Ref": "StorageInstanceType"
-        },
-        "ClusterSize": {
-          "Ref": "StorageClusterSize"
-        },
-        "VolumeSize": {
-          "Ref": "StorageVolumeSize"
-        },
-        "EC2SecurityGroup": {
-          "Fn::GetAtt": [
-            "EC2Stack",
-            "Outputs.GroupId"
-          ]
+    },
+    "StorageStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/nubisproject-stacks/master/storage.template",
+        "TimeoutInMinutes": "60",
+        "Parameters": {
+          "StackName": {
+            "Ref": "AWS::StackName"
+          },
+          "ServiceName": {
+            "Ref": "ServiceName"
+          },
+          "TechnicalOwner": {
+            "Ref": "TechnicalOwner"
+          },
+          "Environment": {
+            "Ref": "Environment"
+          },
+          "KeyName": {
+            "Ref": "KeyName"
+          },
+          "InstanceType": {
+            "Ref": "StorageInstanceType"
+          },
+          "ClusterSize": {
+            "Ref": "StorageClusterSize"
+          },
+          "VolumeSize": {
+            "Ref": "StorageVolumeSize"
+          },
+          "EC2SecurityGroup": {
+            "Fn::GetAtt": [
+              "EC2Stack",
+              "Outputs.GroupId"
+            ]
+          }
         }
       }
     }
