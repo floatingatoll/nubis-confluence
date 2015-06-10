@@ -46,17 +46,17 @@ class confluence (
         require => Group['confluence'],
     }
 
-    file { '/data':
-        ensure  => directory,
-    }
+    #file { '/data':
+    #    ensure  => directory,
+    #}
 
-    file { '/data/confluence':
-        ensure  => directory,
-        owner   => confluence,
-        group   => confluence,
-        mode    => '0755',
-        require => [ File['/data'], User['confluence']],
-    }
+    #file { '/data/confluence':
+    #    ensure  => directory,
+    #    owner   => confluence,
+    #    group   => confluence,
+    #    mode    => '0755',
+    #    require => [ File['/data'], User['confluence']],
+    #}
 
     file { '/opt':
         ensure => directory,
