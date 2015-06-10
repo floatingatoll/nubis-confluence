@@ -236,6 +236,24 @@
           "Outputs.RDSEndpoint"
         ]
       }
+    },
+    "DBName": {
+      "Description": "Consul: config/ Database name",
+      "Value": {
+        "Fn::GetAtt": [
+          "RDSStack",
+          "Outputs.RDSName"
+        ]
+      }
+    },
+    "DBUser": {
+      "Description": "Consul: config/ Database user",
+      "Value": {
+        "Fn::GetAtt": [
+          "RDSStack",
+          "Outputs.RDSUser"
+        ]
+      }
     }
   }
 }
