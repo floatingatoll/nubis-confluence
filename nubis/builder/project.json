@@ -6,7 +6,7 @@
       "amazon-ebs-ubuntu"
     ],
     "project_description": "Nubis confluence install",
-    "project_name": "nubis-confluence",
+    "project_name": "confluence",
     "project_version": "0.18",
     "source_ami_project_name": "nubis-base"
   }
