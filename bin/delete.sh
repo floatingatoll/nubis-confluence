@@ -14,4 +14,4 @@ if [[ -z ${STACK_NAME} ]]; then
     exit 1
 fi
 
-aws cloudformation delete-stack ${STACK_NAME}
+aws cloudformation delete-stack --stack-name ${STACK_NAME}
