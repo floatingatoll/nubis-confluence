@@ -70,7 +70,7 @@ class confluence (
         require => File['/opt'],
     }
 
-    file { "/var/run/confluence":
+    file { '/var/run/confluence':
         ensure => directory,
         owner  => confluence,
         group  => confluence,

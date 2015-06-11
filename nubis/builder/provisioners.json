@@ -26,10 +26,18 @@
             "order": "13"
         },
         {
+            "type": "shell",
+            "inline": [
+                "sudo mv /tmp/confluence-init.properties /opt/atlassian/confluence/confluence/WEB-INF/classes",
+                "sudo chown confluence:confluence /opt/atlassian/confluence/confluence/WEB-INF/classes/confluence-init.properties"
+            ],
+            "order": "14"
+        },
+        {
             "type": "file",
             "source": "nubis/bin/init-script",
             "destination": "/tmp/confluence-init",
-            "order": "14"
+            "order": "15"
         },
         {
             "type": "shell",
@@ -38,14 +46,14 @@
                 "sudo chmod 755 /etc/init.d/confluence",
                 "sudo chown root:root /etc/init.d/confluence"
             ],
-            "order": "15"
+            "order": "16"
         },
         {
             "type": "shell",
             "inline": [
                 "sudo mv /tmp/robots.txt /opt/atlassian/confluence",
-                "sudo mv /tmp/setenv.sh /opt/atlassian/confluence",
-                "sudo mv /tmp/confluence-init.properties /opt/atlassian/confluence/WEB-INF/classes/confluence-init.properties",
+                "sudo mv /tmp/setenv.sh /opt/atlassian/confluence/bin",
+                "sudo chmod 755 /opt/atlassian/confluence/bin/setenv.sh",
                 "sudo chown -R confluence:confluence /opt/atlassian",
                 "sudo chown confluence:confluence /var/run/confluence"
             ],
