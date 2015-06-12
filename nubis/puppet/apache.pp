@@ -24,7 +24,7 @@ class { 'apache::mod::remoteip':
 apache::mod { 'proxy': }
 apache::mod { 'headers': }
 
-apache::vhost { 'default':
+apache::vhost { 'default_vhost':
     port          => '80',
     servername    => $::fqdn,
     default_vhost => true,
@@ -56,7 +56,7 @@ apache::vhost { $vhost_name:
     ],
     proxy_preserve_host => false,
     additional_includes => [
-        '/etc/apache2/conf-enabled/mana.mozilla.org.conf'
+        '/etc/apache2/conf-enabled/confluence-include.conf'
     ],
     #access_log_format   => "${log_prefix}/${vhost_name}/access_%Y-%m-%d-%H 3600 -0 combined",
     #access_log_pipe     => $::osfamily ? {
