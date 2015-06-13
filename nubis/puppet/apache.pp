@@ -25,7 +25,7 @@ apache::mod { 'proxy': }
 apache::mod { 'proxy_http': }
 apache::mod { 'headers': }
 
-apache::vhost { 'default':
+apache::vhost { 'default_vhost':
     port                 => '80',
     servername           => $vhost_name,
     default_vhost        => true,
