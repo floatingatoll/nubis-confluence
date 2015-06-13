@@ -1,0 +1,56 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          confluence
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the confluence wiki system
+# Description:       starts the confluence wiki system
+### END INIT INFO
+
+progname=`basename $0`
+
+CONFLUENCE_START="/opt/atlassian/confluence/bin/startup.sh"
+CONFLUENCE_STOP="/opt/atlassian/confluence/bin/shutdown.sh"
+CONFLUENCE_USER="confluence"
+RETVAL=0
+
+# We assume that this will run on ubuntu
+PREFIX='/opt/atlassian/confluence'
+pidfile=/var/run/${CONFLUENCE_USER}/${progname}.pid
+
+JAVA_HOME='/usr/lib/jvm/java-8-oracle'
+CATALINA_HOME=${prefix}
+CATALINA_PID=${pidfile}
+
+export JAVA_HOME
+export CATALINA_HOME
+
+case "$1" in
+    start)
+        export JAVA_HOME
+        export CATALINA_HOME
+        export CATALINA_PID
+        su - $CONFLUENCE_USER -c $CONFLUENCE_START
+        RETVAL=$?
+        ;;
+    stop)
+        export JAVA_HOME
+        export CATALINA_HOME
+        export CATALINA_PID
+        su - $CONFLUENCE_USER -c $CONFLUENCE_STOP
+        RETVAL=$?
+        ;;
+    restart)
+        su - $CONFLUENCE_USER -c $CONFLUENCE_STOP
+        su - $CONFLUENCE_USER -c $CONFLUENCE_START
+        RETVAL=$?
+        ;;
+    *)
+        echo "Usage: confluence {start|stop|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL
