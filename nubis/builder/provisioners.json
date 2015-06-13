@@ -8,6 +8,27 @@
             "order": "1"
         },
         {
+            "type": "shell",
+            "inline": [
+                "sudo mkdir -p /etc/apache2/conf-include",
+                "sudo chown -R root:root /etc/apache2/conf-include"
+            ],
+            "order": "2"
+        },
+        {
+            "type": "file",
+            "source": "nubis/bin/confluence-include.conf",
+            "destination": "/tmp/confluence-include.conf",
+            "order": "3"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo mv /tmp/confluence-include.conf /etc/apache2/conf-include"
+            ],
+            "order": "4"
+        },
+        {
             "type": "file",
             "source": "nubis/bin/confluence-robots.txt",
             "destination": "/tmp/robots.txt",
