@@ -26,12 +26,12 @@ apache::mod { 'proxy_http': }
 apache::mod { 'headers': }
 
 apache::vhost { 'default_vhost':
-    port                 => '80',
-    servername           => $vhost_name,
-    default_vhost        => true,
-    docroot              => '/var/www/html',
-    redirect_source      => [ '/' ],
-    redirect_destination => [ "http://${::vhost_name}/wiki" ],
+    port            => '80',
+    servername      => $vhost_name,
+    default_vhost   => true,
+    docroot         => '/var/www/html',
+    redirect_source => [ '/' ],
+    redirect_dest   => [ "http://${::vhost_name}/wiki" ],
 }
 
 apache::vhost { $vhost_name:
