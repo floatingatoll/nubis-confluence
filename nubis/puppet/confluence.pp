@@ -20,10 +20,10 @@ class confluence (
         }
     }
 
-    package { 'java-1.7.0-openjdk':
-        ensure => present,
-        name   => $java_openjdk_packagename,
-    }
+    #package { 'java-1.7.0-openjdk':
+    #    ensure => present,
+    #    name   => $java_openjdk_packagename,
+    #}
 
     package { 'libXp':
         ensure => present,
