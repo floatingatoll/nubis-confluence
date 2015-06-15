@@ -14,7 +14,8 @@ class { 'apache':
     default_mods        => true,
     default_vhost       => false,
     default_confd_files => false,
-    mpm_module          => 'prefork'
+    mpm_module          => 'prefork',
+    keepalive_timeout   => '30',
 }
 
 class { 'apache::mod::remoteip':
@@ -25,46 +26,51 @@ apache::mod { 'proxy': }
 apache::mod { 'proxy_http': }
 apache::mod { 'headers': }
 
-apache::vhost { 'default_vhost':
-    port            => '80',
-    servername      => $vhost_name,
-    default_vhost   => true,
-    docroot         => '/var/www/html',
-    redirect_source => [ '/' ],
-    redirect_dest   => [ "http://${::vhost_name}/wiki" ],
+apache::custom_config { 'hostname.conf':
+    content => "Header always set X-Backend-Server ${::fqdn}"
 }
 
 apache::vhost { $vhost_name:
-    port    => '80',
-    docroot => '/var/www/html',
-    aliases => [
+    port          => '80',
+    docroot       => '/var/www/html',
+    default_vhost => true,
+    aliases       => [
         {
             aliasmatch => '/robots.txt',
             path       => '/opt/atlassian/confluence/robots.txt'
         }
     ],
-    rewrites => [
-        {
-            comment      => 'bug 1022964',
-            rewrite_cond => [ '%{REQUEST_URI} !^/(wiki|robots\.txt)' ],
-            rewrite_rule => [ '^/(.*)$        https://mana.allizom.org/wiki/$1 [R=302,L]']
-        }
-    ],
+    #rewrites => [
+    #    {
+    #        comment      => 'bug 1022964',
+    #        rewrite_cond => [ '%{REQUEST_URI} !^/(wiki|robots\.txt)' ],
+    #        rewrite_rule => [ '^/(.*)$        https://mana.allizom.org/wiki/$1 [R=302,L]']
+    #    }
+    #],
     directories => [
         {
             path     => '/wiki/s',
             provider => 'location',
             require  => 'all granted',
+        },
+        {
+            path     => '/wiki',
+            provider => 'location',
+            require  => 'all granted',
+            headers  => 'always set Strict-Transport-Security "max-age=2629744; includeSubdomains"',
+        },
+    ],
+    proxy_preserve_host => true,
+    proxy_pass          => [
+        {
+            path    => '/wiki',
+            url     => 'http://127.0.0.1:8090/wiki',
         }
     ],
-    proxy_preserve_host => false,
-    additional_includes => [
-        '/etc/apache2/conf-include/confluence-include.conf'
+    proxy_dest_reverse_match => [
+        {
+            path    => '/wiki',
+            url     => 'http://127.0.0.1:8090/wiki'
+        }
     ],
-    #access_log_format   => "${log_prefix}/${vhost_name}/access_%Y-%m-%d-%H 3600 -0 combined",
-    #access_log_pipe     => $::osfamily ? {
-    #    'redhat'    => '|/usr/sbin/rotatelogs',
-    #    'debian'    => '|/usr/bin/rotatelogs',
-    #    default => fail("Package apache2-utils not installed")
-    #},
 }
