@@ -10,6 +10,8 @@
 # Description:       starts the confluence wiki system
 ### END INIT INFO
 
+test -f /lib/lsb/init-functions && . /lib/lsb/init-functions
+
 progname=`basename $0`
 
 CONFLUENCE_START="/opt/atlassian/confluence/bin/startup.sh"
@@ -28,25 +30,48 @@ CATALINA_PID=${pidfile}
 export JAVA_HOME
 export CATALINA_HOME
 
+start_daemon() {
+    export JAVA_HOME
+    export CATALINA_PID
+    export CATALINA_HOME
+
+    # We assume /lib/lsb/init-functions is available
+    log_daemon_msg "Starting ${progname}" ${progname}
+    su - ${CONFLUENCE_USER} -c ${CONFLUENCE_START}
+    RETVAL=$?
+    if [[ $RETVAL == 0 ]]; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+}
+
+stop_daemon() {
+    export JAVA_HOME
+    export CATALINA_PID
+    export CATALINA_HOME
+
+    log_daemon_msg "Stopping ${progname}" ${progname}
+    su - ${CONFLUENCE_USER} -c ${CONFLUENCE_STOP}
+    RETVAL=$?
+    if [[ $RETVAL == 0 ]]; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+}
+
 case "$1" in
     start)
-        export JAVA_HOME
-        export CATALINA_HOME
-        export CATALINA_PID
-        su - $CONFLUENCE_USER -c $CONFLUENCE_START
-        RETVAL=$?
+        start_daemon
         ;;
     stop)
-        export JAVA_HOME
-        export CATALINA_HOME
-        export CATALINA_PID
-        su - $CONFLUENCE_USER -c $CONFLUENCE_STOP
-        RETVAL=$?
+        stop_daemon
         ;;
     restart)
-        su - $CONFLUENCE_USER -c $CONFLUENCE_STOP
-        su - $CONFLUENCE_USER -c $CONFLUENCE_START
-        RETVAL=$?
+        stop_daemon
+        sleep 5
+        start_daemon
         ;;
     *)
         echo "Usage: confluence {start|stop|restart}"
