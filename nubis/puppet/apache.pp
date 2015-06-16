@@ -22,9 +22,9 @@ class { 'apache::mod::remoteip':
     proxy_ips => [ '127.0.0.1', '10.0.0.0/8' ]
 }
 
-apache::mod { 'proxy': }
-apache::mod { 'proxy_http': }
-apache::mod { 'headers': }
+include apache::mod::proxy
+include apache::mod::proxy_http
+include apache::mod::headers
 
 apache::custom_config { 'hostname.conf':
     content => "Header always set X-Backend-Server ${::fqdn}"
