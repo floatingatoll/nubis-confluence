@@ -31,10 +31,12 @@ include apache::mod::headers
 #}
 
 apache::vhost { $vhost_name:
-    port          => '80',
-    docroot       => '/var/www/html',
-    default_vhost => true,
-    aliases       => [
+    port            => '80',
+    docroot         => '/var/www/html',
+    default_vhost   => true,
+    redirect_status => 'permanent',
+    redirect_dest   => "http://${::vhost_name}/wiki",
+    aliases         => [
         {
             aliasmatch => '/robots.txt',
             path       => '/opt/atlassian/confluence/robots.txt'
