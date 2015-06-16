@@ -50,6 +50,20 @@
             "order": "16"
         },
         {
+            "type": "file",
+            "source": "nubis/bin/server.xml",
+            "destination": "/tmp/server.xml",
+            "order": "17"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo mv /tmp/server.xml /opt/atlassian/confluence/conf",
+                "sudo chown confluence:confluence /opt/atlassian/confluence/conf/server.xml"
+            ],
+            "order": "18"
+        },
+        {
             "type": "shell",
             "inline": [
                 "sudo mv /tmp/robots.txt /opt/atlassian/confluence",
