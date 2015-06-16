@@ -17,3 +17,7 @@ package { 'oracle-java8-installer':
     require => [ Apt::Ppa['ppa:webupd8team/java'], Exec['set-licence-selected'], Exec['set-licence-seen'] ]
 }
 
+package { 'oracle-java8-set-default':
+    ensure  => installed,
+    require => [ Package['oracle-java8-installer'], Apt::Ppa['ppa:webupd8team/java'], Exec['set-licence-selected'], Exec['set-licence-seen'] ]
+}
