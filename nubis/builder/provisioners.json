@@ -15,6 +15,12 @@
         },
         {
             "type": "file",
+            "source": "nubis/bin/setenv.sh",
+            "destination": "/tmp/setenv.sh",
+            "order": "12"
+        },
+        {
+            "type": "file",
             "source": "nubis/bin/confluence-init.properties",
             "destination": "/tmp/confluence-init.properties",
             "order": "13"
@@ -48,6 +54,7 @@
             "inline": [
                 "sudo mv /tmp/robots.txt /opt/atlassian/confluence",
                 "sudo mv /tmp/setenv.sh /opt/atlassian/confluence/bin",
+                "sudo chmod 755 /opt/atlassian/confluence/bin/setenv.sh",
                 "sudo chown -R confluence:confluence /opt/atlassian",
                 "sudo chown confluence:confluence /var/run/confluence",
                 "sudo chown -R confluence:confluece /data/confluence"
