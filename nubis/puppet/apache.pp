@@ -26,9 +26,9 @@ include apache::mod::proxy
 include apache::mod::proxy_http
 include apache::mod::headers
 
-apache::custom_config { 'hostname.conf':
-    content => "Header always set X-Backend-Server ${::fqdn}"
-}
+#apache::custom_config { 'hostname.conf':
+#    content => "Header always set X-Backend-Server ${::fqdn}"
+#}
 
 apache::vhost { $vhost_name:
     port          => '80',
