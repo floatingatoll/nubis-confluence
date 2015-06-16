@@ -26,16 +26,12 @@ include apache::mod::proxy
 include apache::mod::proxy_http
 include apache::mod::headers
 
-#apache::custom_config { 'hostname.conf':
-#    content => "Header always set X-Backend-Server ${::fqdn}"
-#}
-
 apache::vhost { $vhost_name:
     port            => '80',
     docroot         => '/var/www/html',
     default_vhost   => true,
-    redirect_status => 'permanent',
-    redirect_dest   => "http://${::vhost_name}/wiki",
+    #redirect_status => 'permanent',
+    #redirect_dest   => "http://${::vhost_name}/wiki",
     aliases         => [
         {
             aliasmatch => '/robots.txt',
