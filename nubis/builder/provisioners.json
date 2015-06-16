@@ -71,7 +71,7 @@
                 "sudo chmod 755 /opt/atlassian/confluence/bin/setenv.sh",
                 "sudo chown -R confluence:confluence /opt/atlassian",
                 "sudo chown confluence:confluence /var/run/confluence",
-                "sudo chown -R confluence:confluece /data/confluence"
+                "sudo chown -R confluence:confluence /data/confluence"
             ],
             "order": "20"
         }
