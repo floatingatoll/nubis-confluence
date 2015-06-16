@@ -35,7 +35,7 @@
         },
         {
             "type": "file",
-            "source": "nubis/bin/init-script",
+            "source": "nubis/bin/init-script-debian",
             "destination": "/tmp/confluence-init",
             "order": "15"
         },
@@ -44,7 +44,8 @@
             "inline": [
                 "sudo mv /tmp/confluence-init /etc/init.d/confluence",
                 "sudo chmod 755 /etc/init.d/confluence",
-                "sudo chown root:root /etc/init.d/confluence"
+                "sudo chown root:root /etc/init.d/confluence",
+                "sudo update-rc.d confluence defaults"
             ],
             "order": "16"
         },
