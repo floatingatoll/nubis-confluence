@@ -1,5 +1,4 @@
 
-#class { 'apt': } ->
 include apt
 apt::ppa { 'ppa:webupd8team/java': }
 
