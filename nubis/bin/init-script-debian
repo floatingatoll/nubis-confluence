@@ -30,6 +30,13 @@ CATALINA_PID=${pidfile}
 export JAVA_HOME
 export CATALINA_HOME
 
+# This is a hack to get nubis to play nice, since we can't see to
+# set the permissions during the packer build and cloudformation
+# just clobbers the rightful permission........ SIGH
+if [ ${CONFLUENCE_HOME} ] && [ -d ${CONFLUENCE_HOME} ]; then
+    chown ${CONFLUENCE_USER}:${CONFLUENCE_USER} ${CONFLUENCE_HOME}
+fi
+
 start_daemon() {
     export JAVA_HOME
     export CATALINA_PID
@@ -37,7 +44,7 @@ start_daemon() {
 
     # We assume /lib/lsb/init-functions is available
     log_daemon_msg "Starting ${progname}" ${progname}
-    su - ${CONFLUENCE_USER} -c ${CONFLUENCE_START}
+    su - ${CONFLUENCE_USER} -c ${CONFLUENCE_START} > /dev/null
     RETVAL=$?
     if [[ $RETVAL == 0 ]]; then
         log_end_msg 0
@@ -52,7 +59,7 @@ stop_daemon() {
     export CATALINA_HOME
 
     log_daemon_msg "Stopping ${progname}" ${progname}
-    su - ${CONFLUENCE_USER} -c ${CONFLUENCE_STOP}
+    su - ${CONFLUENCE_USER} -c ${CONFLUENCE_STOP} > /dev/null
     RETVAL=$?
     if [[ $RETVAL == 0 ]]; then
         log_end_msg 0
