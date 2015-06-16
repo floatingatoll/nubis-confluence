@@ -3,7 +3,7 @@
 # confluence    Startup script for the Confluence
 #
 # chkconfig: 2345 99 01
-# description: 
+# description:
 
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -26,6 +26,14 @@ export CATALINA_HOME
 export CATALINA_PID
 export JAVA_HOME
 export JAVA_OPTS
+
+# This is a hack to get nubis to play nice, since we can't see to
+# set the permissions during the packer build and cloudformation
+# just clobbers the rightful permission........ SIGH
+CONFLUENCE_HOME=$(grep confluence.home ${PREFIX}/confluence/WEB-INF/classes/confluence-init.properties  |egrep -v '^[#]' | sed -r 's/confluence.home=(.+)/\1/g')
+if [ ${CONFLUENCE_HOME} ] && [ -d ${CONFLUENCE_HOME} ]; then
+    chown ${CONFLUENCE_USER}:${CONFLUENCE_USER} ${CONFLUENCE_HOME}
+fi
 
 start() {
 	export JAVA_HOME
