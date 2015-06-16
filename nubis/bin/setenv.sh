@@ -39,7 +39,7 @@ echo "Server startup logs are located in $LOGBASEABS/logs/catalina.out"
 # http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html
 CATALINA_OPTS="$CATALINA_OPTS -Xms2048M -Xmx4096M -XX:MaxPermSize=2048M -XX:+UseG1GC"
 CATALINA_OPTS="$CATALINA_OPTS -Djava.awt.headless=true"
-CATALINA_OPTS="$CATALINA_OPTS -Xloggc:$LOGBASEABS/logs/gc-`date +%F_%T`.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=2M"
+CATALINA_OPTS="$CATALINA_OPTS -Xloggc:$LOGBASEABS/logs/gc-`date +%F_%H-%M-%S`.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=2M"
 CATALINA_OPTS="$CATALINA_OPTS -XX:-PrintGCDetails -XX:+PrintGCTimeStamps -XX:-PrintTenuringDistribution"
 export CATALINA_OPTS
 
