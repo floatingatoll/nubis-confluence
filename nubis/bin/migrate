@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+# This script is run on every ami change.
+#+ This is the place to do things like database initilizations and migrations.
+#
+#set -x
+
+LOGGER_BIN='/usr/bin/logger'
+
+# Set up the logger command if the binary is installed
+if [ ! -x $LOGGER_BIN ]; then
+    echo "ERROR: 'logger' binary not found - Aborting"
+    echo "ERROR: '$BASH_SOURCE' Line: '$LINENO'"
+    exit 2
+else
+    LOGGER="$LOGGER_BIN --stderr --priority local7.info --tag migrate"
+fi
+
+# Source the consul connection details from the metadata api
+eval `curl -fq http://169.254.169.254/latest/user-data`
+
+# Check to see if NUBIS_MIGRATE was set in userdata. If not we exit quietly.
+if [ ${NUBIS_MIGRATE:-0} == '0' ]; then
+    exit 0
+fi
+
+# Set up the consul url
+CONSUL="http://localhost:8500/v1/kv/$NUBIS_STACK/$NUBIS_ENVIRONMENT/config"
+
+# We run early, so we need to account for Consul's startup time, unfortunately, magic isn't
+# always free
+CONSUL_UP=-1
+COUNT=0
+while [ "$CONSUL_UP" != "0" ]; do
+    if [ ${COUNT} == "6" ]; then
+        $LOGGER "ERROR: Timeout while attempting to connect to consul."
+        exit 1
+    fi
+    QUERY=`curl -s ${CONSUL}?raw=1`
+    CONSUL_UP=$?
+
+    if [ "$QUERY" != "" ]; then
+        CONSUL_UP=-2
+    fi
+
+    if [ "$CONSUL_UP" != "0" ]; then
+        $LOGGER "Consul not ready yet ($CONSUL_UP). Sleeping 10 seconds before retrying..."
+        sleep 10
+        COUNT=${COUNT}+1
+    fi
+done
+
+# Generate secrets for app
+DBPassword=`curl -s $CONSUL/DBPassword?raw=1`
+if [ "$DBpassword" == "" ]; then
+    DBPassword=`makepasswd --minchars=12 --maxchars=16`
+    curl -s -X PUT -d $DBPassword $CONSUL/DBpassword
+fi
+
+# Grab the variables from consul
+#+ If this is a new stack we need to wait for the values to be placed in consul
+#+ We will test the first and sleep with a timeout
+KEYS_UP=-1
+COUNT=0
+while [ "$KEYS_UP" != "0" ]; do
+    # Try for 20 minutes (30 seconds * 20160 attempts = 604800 seconds / 60 seconds / 60 minutes / 12 hours = 7 days)
+    if [ ${COUNT} == "20160" ]; then
+        $LOGGER "ERROR: Timeout while waiting for keys to be populated in consul."
+        exit 1
+    fi
+    QUERY=`curl -s $CONSUL/DBserver?raw=1`
+
+    if [ "$QUERY" == "" ]; then
+        $LOGGER "Keys not ready yet. Sleeping 30 seconds before retrying..."
+        sleep 30
+        COUNT=${COUNT}+1
+    else
+        KEYS_UP=0
+    fi
+done
+
+# Now we can safely gather the values
+DBServer=`curl -s $CONSUL/DBServer?raw=1`
+DBName=`curl -s $CONSUL/DBName?raw=1`
+DBUser=`curl -s $CONSUL/DBUser?raw=1`
+
+# Check to see if /data is mounted
+#+ Create directories if they do not exist
+while [ ${DONE:-0} -lt '60' ]; do
+    MOUNT_TEST=`mountpoint -q /data/confluence/`
+    MOUNT_UP=$?
+    if [ $MOUNT_UP == 0 ]; then
+        if [ ! -d '/data/confluence' ]; then
+            mkdir '/data/confluence'
+            chown confluence:confluence '/data/confluence'
+        fi
+        DONE=255
+    else
+        echo "Waiting for mount point (sleep 10) ($DONE of 60)"
+        sleep 10
+        let DONE=$DONE+1
+    fi
+done
