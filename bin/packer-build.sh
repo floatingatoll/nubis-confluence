@@ -8,7 +8,6 @@ else
     echo "Please configure variables.sh"
 fi
 
-
 nubis_build_dir=${BASE_DIR}/nubis-builder
 export PATH="${nubis_build_dir}/bin:$PATH"
 
