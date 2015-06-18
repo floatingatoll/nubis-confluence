@@ -3,7 +3,7 @@
 # use at own risk
 
 # Assume base dir is in ~/git edit this value as needed
-BASE_DIR=${HOME}/git
+BASE_DIR=${HOME}/nubis
 PROJECT_DIR=${BASE_DIR}/nubis-confluence
 
 # Name of the stack, only required value here
