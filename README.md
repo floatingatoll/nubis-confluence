@@ -1,5 +1,4 @@
 # nubis-confluence
--------------------
 
 ### Getting started
 How to build confluence using a combination of packer + cloudformation + nubis magic, this works with my current setup, so modify path to fit your needs
