@@ -1,7 +1,11 @@
-I got tired of typing out the cloudformation commands so i wrote scripts to help me
+I got tired of typing out the cloudformation commands so i wrote scripts to help me.
 
-build.sh    - Builds the cloudformation stack and requires a stackname as a command line parameter
+You will need to configure the BASE_DIR variable by editing the variables.sh file
 
-update.sh   - Updates the cloudformation stack, also requires a stackname.
+build.sh        - Builds the cloudformation stack and requires a stackname as a command line parameter
 
-delete.sh   - Deletes the stack
+update.sh       - Updates the cloudformation stack, also requires a stackname.
+
+delete.sh       - Deletes the stack
+
+packer-build.sh - Builds ami using nubis-builder

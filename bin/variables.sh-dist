@@ -1,0 +1,3 @@
+# Place base dir location here
+
+BASE_DIR=${HOME}/nubis
