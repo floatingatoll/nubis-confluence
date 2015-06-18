@@ -97,6 +97,12 @@ class confluence (
         target  => "/opt/atlassian/atlassian-confluence-${version}",
         require => Exec["unpack confluence version ${version}"],
     }
+
+    file { '/var/log/confluence':
+        ensure  => link,
+        target  => "/opt/atlassian/atlassian-confluence-${version}",
+        require => Exec["unpack confluence version ${version}"],
+    }
 }
 
 class { 'confluence':
