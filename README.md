@@ -18,7 +18,7 @@ How to build confluence using a combination of packer + cloudformation + nubis m
 
   ``` bash
   export PATH="~/nubis/nubis-builder/bin:$PATH"
-  nubis-consul --settings nubis/cloudformation/parameters.json --stack-name
+  nubis-consul --settings nubis/cloudformation/parameters.json --stack-name confluence get-and-update
   ```
 
 ### Other commands
