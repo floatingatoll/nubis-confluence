@@ -20,4 +20,4 @@ echo "Deleting cloudformation stack: ${STACK_NAME}"
 aws cloudformation delete-stack --stack-name ${STACK_NAME}
 
 echo "Deleting consul data from stack: ${STACKNAME}"
-nubis-consul --settings ${PROJECT_DIR}/nubis/cloudformation/parameters.json --stack-name ${STACKNAME} delete
+nubis-consul --stack-name ${STACKNAME} --settings ${PROJECT_DIR}/nubis/cloudformation/parameters.json delete

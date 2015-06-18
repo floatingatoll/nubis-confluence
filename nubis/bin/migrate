@@ -53,8 +53,8 @@ done
 # Generate secrets for app
 DBPassword=`curl -s $CONSUL/DBPassword?raw=1`
 if [ "$DBpassword" == "" ]; then
-    DBPassword=`makepasswd --minchars=12 --maxchars=16`
-    curl -s -X PUT -d $DBPassword $CONSUL/DBpassword
+    DBPassword=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-16} | head -n 1`
+    curl -s -X PUT -d $DBPassword $CONSUL/DBPassword
 fi
 
 # Grab the variables from consul
@@ -68,7 +68,7 @@ while [ "$KEYS_UP" != "0" ]; do
         $LOGGER "ERROR: Timeout while waiting for keys to be populated in consul."
         exit 1
     fi
-    QUERY=`curl -s $CONSUL/DBserver?raw=1`
+    QUERY=`curl -s $CONSUL/DBServer?raw=1`
 
     if [ "$QUERY" == "" ]; then
         $LOGGER "Keys not ready yet. Sleeping 30 seconds before retrying..."
@@ -83,6 +83,8 @@ done
 DBServer=`curl -s $CONSUL/DBServer?raw=1`
 DBName=`curl -s $CONSUL/DBName?raw=1`
 DBUser=`curl -s $CONSUL/DBUser?raw=1`
+DBPassword=`curl -s $CONSUL/DBPassword?raw=1`
+
 
 # Check to see if /data is mounted
 #+ Create directories if they do not exist
@@ -92,8 +94,9 @@ while [ ${DONE:-0} -lt '60' ]; do
     if [ $MOUNT_UP == 0 ]; then
         if [ ! -d '/data/confluence' ]; then
             mkdir '/data/confluence'
-            chown confluence:confluence '/data/confluence'
         fi
+        chown -R confluence:confluence /data/confluence
+        /etc/init.d/confluence restart
         DONE=255
     else
         echo "Waiting for mount point (sleep 10) ($DONE of 60)"
